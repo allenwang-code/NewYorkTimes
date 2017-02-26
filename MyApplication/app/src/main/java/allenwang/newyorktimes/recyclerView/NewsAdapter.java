@@ -64,8 +64,10 @@ public class NewsAdapter  extends
         TextView textView = holder.title;
         textView.setText(doc.getLeadParagraph());
         ImageView imageView = holder.imageView;
-        String surfix =  doc.getMultimedia().get(3).getUrl();
-        Picasso.with(getContext()).load(Constant.imgUrl + surfix).into(imageView);
+        if (doc.getMultimedia().size() > 0) {
+            String surfix = doc.getMultimedia().get(0).getUrl();
+            Picasso.with(getContext()).load(Constant.imgUrl + surfix).into(imageView);
+        }
     }
 
     @Override
@@ -88,7 +90,7 @@ public class NewsAdapter  extends
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            title = (TextView) itemView.findViewById(R.id.textView);
+            title = (TextView) itemView.findViewById(R.id.textView4);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
         }
     }

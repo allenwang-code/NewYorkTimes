@@ -19,22 +19,26 @@ public class Doc {
     private String leadParagraph;
     @SerializedName("abstract")
     @Expose
-    private Object _abstract;
+    private String _abstract;
     @SerializedName("print_page")
     @Expose
-    private Object printPage;
+    private String printPage;
     @SerializedName("blog")
     @Expose
     private List<Object> blog = null;
     @SerializedName("source")
     @Expose
     private String source;
+
+
     @SerializedName("multimedia")
     @Expose
     private List<Multimedium> multimedia = null;
+
     @SerializedName("headline")
     @Expose
     private Headline headline;
+
     @SerializedName("keywords")
     @Expose
     private List<Keyword> keywords = null;
@@ -47,6 +51,8 @@ public class Doc {
     @SerializedName("news_desk")
     @Expose
     private String newsDesk;
+
+
     @SerializedName("section_name")
     @Expose
     private String sectionName;
@@ -64,10 +70,10 @@ public class Doc {
     private String id;
     @SerializedName("word_count")
     @Expose
-    private Object wordCount;
+    private String wordCount;
     @SerializedName("slideshow_credits")
     @Expose
-    private Object slideshowCredits;
+    private String slideshowCredits;
 
     public String getWebUrl() {
         return webUrl;
@@ -97,7 +103,7 @@ public class Doc {
         return _abstract;
     }
 
-    public void setAbstract(Object _abstract) {
+    public void setAbstract(String _abstract) {
         this._abstract = _abstract;
     }
 
@@ -105,17 +111,17 @@ public class Doc {
         return printPage;
     }
 
-    public void setPrintPage(Object printPage) {
+    public void setPrintPage(String printPage) {
         this.printPage = printPage;
     }
 
-    public List<Object> getBlog() {
-        return blog;
-    }
-
-    public void setBlog(List<Object> blog) {
-        this.blog = blog;
-    }
+//    public List<String> getBlog() {
+//        return blog;
+//    }
+//
+//    public void setBlog(List<String> blog) {
+//        this.blog = blog;
+//    }
 
     public String getSource() {
         return source;
@@ -217,7 +223,7 @@ public class Doc {
         return wordCount;
     }
 
-    public void setWordCount(Object wordCount) {
+    public void setWordCount(String wordCount) {
         this.wordCount = wordCount;
     }
 
@@ -225,7 +231,7 @@ public class Doc {
         return slideshowCredits;
     }
 
-    public void setSlideshowCredits(Object slideshowCredits) {
+    public void setSlideshowCredits(String slideshowCredits) {
         this.slideshowCredits = slideshowCredits;
     }
 

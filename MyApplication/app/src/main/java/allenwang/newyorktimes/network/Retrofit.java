@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class Retrofit {
-    private static final String BASE_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json/";
+    private static final String BASE_URL = "https://api.nytimes.com/";
 
     private static OkHttpClient okHttp;
     private static retrofit2.Retrofit retrofit;

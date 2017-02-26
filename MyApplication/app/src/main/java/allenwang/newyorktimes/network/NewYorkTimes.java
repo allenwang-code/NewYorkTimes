@@ -16,8 +16,8 @@ import retrofit2.http.GET;
 
 
 public interface NewYorkTimes {
-    public static String apiKey = "227c750bb7714fc39ef1559ef1bd8329";
+    String apiKey = "227c750bb7714fc39ef1559ef1bd8329";
 
-    @GET("api-key=" + apiKey)
+    @GET("svc/search/v2/articlesearch.json?api-key=227c750bb7714fc39ef1559ef1bd8329")
     Call<News> getNews();
 }

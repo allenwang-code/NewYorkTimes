@@ -18,11 +18,11 @@ public class Multimedium {
     @SerializedName("subtype")
     @Expose
     private String subtype;
-    @SerializedName("legacy")
-    @Expose
-    private Legacy legacy;
-    @SerializedName("type")
-    @Expose
+//    @SerializedName("legacy")
+//    @Expose
+//    private Legacy legacy;
+//    @SerializedName("type")
+//    @Expose
     private String type;
 
     public Integer getWidth() {
@@ -57,13 +57,13 @@ public class Multimedium {
         this.subtype = subtype;
     }
 
-    public Legacy getLegacy() {
-        return legacy;
-    }
-
-    public void setLegacy(Legacy legacy) {
-        this.legacy = legacy;
-    }
+//    public Legacy getLegacy() {
+//        return legacy;
+//    }
+//
+//    public void setLegacy(Legacy legacy) {
+//        this.legacy = legacy;
+//    }
 
     public String getType() {
         return type;
