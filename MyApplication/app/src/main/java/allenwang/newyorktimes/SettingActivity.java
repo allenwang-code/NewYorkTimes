@@ -2,6 +2,7 @@ package allenwang.newyorktimes;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -28,5 +29,11 @@ public class SettingActivity extends AppCompatActivity {
         btnSave = (Button) findViewById(R.id.btn_save);
 
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SettingActivity.this.finish();
+            }
+        });
     }
 }
