@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SettingActivity extends AppCompatActivity {
@@ -60,11 +61,11 @@ public class SettingActivity extends AppCompatActivity {
     private String handleDate() {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth()+1;
-        int year =  datePicker.getYear();
+        int year =  datePicker.getYear()-1900;
 
         Date d = new Date(year, month, day);
-
-        return android.text.format.DateFormat.format("yyyyMMdd", d).toString();
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");
+        return s.format(d); //android.text.format.DateFormat.format("yyyyMMdd", d).toString();
     }
 
     private String handleFq() {

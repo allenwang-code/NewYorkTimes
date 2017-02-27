@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getNewDividByPage() {
-        qString = searchEditText.getText().toString();
+        qString = searchEditText.getText().toString(); // must be null
 
         NewYorkTimes ny = Retrofit.getInstance().createService(NewYorkTimes.class);
         Call<News> news = ny.getNews(String.valueOf(page),
