@@ -5,5 +5,10 @@ package allenwang.newyorktimes;
  */
 
 public class Constant {
-    public static String imgUrl = "http://graphics8.nytimes.com/";
+    public static final String IMG_URL = "http://graphics8.nytimes.com/";
+
+    public static String BEGIN_DATE = "BEGIN_DATE";
+    public static String SORT = "SORT";
+    public static String FQ = "FQ";
+
 }

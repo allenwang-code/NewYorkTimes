@@ -29,7 +29,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    final static int RESULT_CODE = 100;
     // Store a member variable for the listener
     private EndlessRecyclerViewScrollListener scrollListener;
     private NewsAdapter adapter;
@@ -90,7 +90,21 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void getNewFormPage() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_CODE) {
+            if (resultCode != RESULT_OK) { return; }
+
+            Bundle b = data.getExtras();
+            qBeginDay = b.getString(Constant.BEGIN_DATE);
+            qSort = b.getString(Constant.SORT);
+            qNewDesk = b.getString(Constant.FQ);
+
+        }
+    }
+
+    private void getNewDividByPage() {
         qString = searchEditText.getText().toString();
 
         NewYorkTimes ny = Retrofit.getInstance().createService(NewYorkTimes.class);
@@ -129,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items
         //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-        getNewFormPage();
+        getNewDividByPage();
         Toast.makeText(this, "MAX!!!", Toast.LENGTH_SHORT).show();
     }
 
@@ -138,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.button:
-                    getNewFormPage();
+                    getNewDividByPage();
                     break;
 
 
@@ -153,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.action_sort:
                     Intent i = new Intent();
                     i.setClass(MainActivity.this, SettingActivity.class);
-                    startActivity(i);
+                    startActivityForResult(i, RESULT_CODE);
                     break;
             }
 

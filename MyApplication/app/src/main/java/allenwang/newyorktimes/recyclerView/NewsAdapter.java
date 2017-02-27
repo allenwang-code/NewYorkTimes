@@ -66,7 +66,7 @@ public class NewsAdapter  extends
         ImageView imageView = holder.imageView;
         if (doc.getMultimedia().size() > 0) {
             String surfix = doc.getMultimedia().get(0).getUrl();
-            Picasso.with(getContext()).load(Constant.imgUrl + surfix).into(imageView);
+            Picasso.with(getContext()).load(Constant.IMG_URL + surfix).into(imageView);
         } else {
             imageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_launcher));
         }
