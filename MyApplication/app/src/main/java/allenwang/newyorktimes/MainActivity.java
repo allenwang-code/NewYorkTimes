@@ -9,11 +9,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import allenwang.newyorktimes.model.Doc;
 import allenwang.newyorktimes.model.News;
@@ -24,9 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A login screen that offers login via email/password.
- */
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private Button  doneBtn;
     private RecyclerView recyclerView;
     private Toolbar toolbar;
+
+
+    private int page = 0;
+    private List<Doc> docs = new ArrayList<Doc>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
         doneBtn = (Button) findViewById(R.id.button);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        adapter = new NewsAdapter(this, new ArrayList<Doc>());
+        adapter = new NewsAdapter(this, docs);
         recyclerView.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         StaggeredGridLayoutManager gridLayoutManager =
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         // Attach the layout manager to the recycler view
         recyclerView.setLayoutManager(gridLayoutManager);
 
@@ -74,32 +78,8 @@ public class MainActivity extends AppCompatActivity {
         // Adds the scroll listener to RecyclerView
         recyclerView.addOnScrollListener(scrollListener);
 
+        getNewFormPage();
 
-        getDataFromRemote();
-
-    }
-
-    private void getDataFromRemote() {
-        NewYorkTimes ny = Retrofit.getInstance().createService(NewYorkTimes.class);
-        Call<News> news = ny.getNews();
-        news.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                News n = response.body();
-                if (n == null) { return; }
-                allenwang.newyorktimes.model.Response r =  n.getResponse();
-                if (r == null) { return; }
-                adapter.updateData(r.getDocs());
-
-                int curSize = adapter.getItemCount();
-                adapter.notifyItemRangeInserted(curSize, r.getDocs().size());
-            }
-
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-
-            }
-        });
     }
 
     @Override
@@ -109,17 +89,46 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void getNewFormPage() {
+        NewYorkTimes ny = Retrofit.getInstance().createService(NewYorkTimes.class);
+        Call<News> news = ny.getNews(String.valueOf(page));
+        news.enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, Response<News> response) {
+                News n = response.body();
+                if (n == null) { return; }
+                allenwang.newyorktimes.model.Response r =  n.getResponse();
+                if (r == null) { return; }
+                docs.addAll(r.getDocs());
+                adapter.updateData(docs);
+                notifyAdapter(r.getDocs().size());
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+
+            }
+        });
+
+        page = page + 1;
+    }
+
+    private void notifyAdapter(int newArraySize) {
+        int curSize = adapter.getItemCount();
+        adapter.notifyItemRangeInserted(curSize, newArraySize);
+    }
+
     public void loadNextDataFromApi(int offset) {
         // Send an API request to retrieve appropriate paginated data
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items
         //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-
+        getNewFormPage();
         Toast.makeText(this, "MAX!!!", Toast.LENGTH_SHORT).show();
     }
 
-
+    private View.OnClickListener()
 
     private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
         @Override
