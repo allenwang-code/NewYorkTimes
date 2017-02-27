@@ -1,6 +1,7 @@
 package allenwang.newyorktimes.recyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import allenwang.newyorktimes.Constant;
 import allenwang.newyorktimes.R;
+import allenwang.newyorktimes.WebViewActivity;
 import allenwang.newyorktimes.model.Doc;
 
 /**
@@ -58,7 +60,17 @@ public class NewsAdapter  extends
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get the data model based on position
-        Doc doc = mDocs.get(position);
+        final Doc doc = mDocs.get(position);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mContext, WebViewActivity.class);
+                i.putExtra(Constant.WEB_VIEW_URL, doc.getWebUrl());
+                mContext.startActivity(i);
+            }
+        });
 
         // Set item views based on your views and data model
         TextView textView = holder.title;
@@ -82,6 +94,7 @@ public class NewsAdapter  extends
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
+        public final View itemView;
         public TextView title;
         public ImageView imageView;
 
@@ -91,9 +104,22 @@ public class NewsAdapter  extends
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
-
+            this.itemView = itemView;
             title = (TextView) itemView.findViewById(R.id.textView4);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
         }
     }
+
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.button:
+
+                    break;
+
+
+            }
+        }
+    };
 }

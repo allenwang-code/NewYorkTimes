@@ -68,10 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         StaggeredGridLayoutManager gridLayoutManager =
                 new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-        // Attach the layout manager to the recycler view
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        // Retain an instance so that you can call `resetState()` for fresh searches
+
         scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -101,11 +100,24 @@ public class MainActivity extends AppCompatActivity {
             qSort = b.getString(Constant.SORT);
             qNewDesk = b.getString(Constant.FQ);
 
+            resetState();
+            getNewsByPage();
         }
     }
 
-    private void getNewDividByPage() {
-        qString = searchEditText.getText().toString(); // must be null
+    public void loadNextDataFromApi(int offset) {
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+        getNewsByPage();
+        Toast.makeText(this, "load new content...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void getNewsByPage() {
+        String s = searchEditText.getText().toString();
+        qString = s.isEmpty()?  null : s; // must be null
 
         NewYorkTimes ny = Retrofit.getInstance().createService(NewYorkTimes.class);
         Call<News> news = ny.getNews(String.valueOf(page),
@@ -135,16 +147,17 @@ public class MainActivity extends AppCompatActivity {
     private void notifyAdapter(int newArraySize) {
         int curSize = adapter.getItemCount();
         adapter.notifyItemRangeInserted(curSize, newArraySize);
+
+        adapter.notifyDataSetChanged();
     }
 
-    public void loadNextDataFromApi(int offset) {
-        // Send an API request to retrieve appropriate paginated data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        //  --> Deserialize and construct new model objects from the API response
-        //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-        getNewDividByPage();
-        Toast.makeText(this, "MAX!!!", Toast.LENGTH_SHORT).show();
+
+
+
+    private void resetState() {
+        page = 0;
+        scrollListener.resetState();
+        docs.clear();
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
@@ -152,10 +165,9 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.button:
-                    getNewDividByPage();
+                    resetState();
+                    getNewsByPage();
                     break;
-
-
             }
         }
     };
