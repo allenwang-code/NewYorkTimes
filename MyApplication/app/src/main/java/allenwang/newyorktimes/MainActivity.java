@@ -118,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
     private void getNewsByPage() {
         String s = searchEditText.getText().toString();
         qString = s.isEmpty()?  null : s; // must be null
-
+        if (qNewDesk != null) {
+            qNewDesk = qNewDesk.equals("news_desk:()") ? null : qNewDesk;
+        }
         NewYorkTimes ny = Retrofit.getInstance().createService(NewYorkTimes.class);
         Call<News> news = ny.getNews(String.valueOf(page),
                 qString, qBeginDay, qSort, qNewDesk
