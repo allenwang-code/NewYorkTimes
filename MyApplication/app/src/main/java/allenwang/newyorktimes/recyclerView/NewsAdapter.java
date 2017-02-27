@@ -67,6 +67,8 @@ public class NewsAdapter  extends
         if (doc.getMultimedia().size() > 0) {
             String surfix = doc.getMultimedia().get(0).getUrl();
             Picasso.with(getContext()).load(Constant.imgUrl + surfix).into(imageView);
+        } else {
+            imageView.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.ic_launcher));
         }
     }
 

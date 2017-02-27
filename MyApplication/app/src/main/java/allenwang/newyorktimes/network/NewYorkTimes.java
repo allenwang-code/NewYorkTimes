@@ -20,6 +20,10 @@ public interface NewYorkTimes {
     String apiKey = "227c750bb7714fc39ef1559ef1bd8329";
 
     @GET("svc/search/v2/articlesearch.json?api-key=227c750bb7714fc39ef1559ef1bd8329")
-    Call<News> getNews(@Query("page") String page
+    Call<News> getNews(@Query("page") String page,
+                       @Query("q") String queryString,
+                       @Query("begin_date") String beginDay, // YYYYMMDD
+                       @Query("sort") String sort,
+                       @Query("fq") String newDesk //news_desk:("Education"%20"Health")
                        );
 }

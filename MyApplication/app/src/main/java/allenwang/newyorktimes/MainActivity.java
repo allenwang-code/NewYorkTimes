@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Toolbar toolbar;
 
+    String qString;
+    String qBeginDay;
+    String qSort;
+    String qNewDesk;
 
     private int page = 0;
     private List<Doc> docs = new ArrayList<Doc>();
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         searchEditText = (EditText) findViewById(R.id.editText);
         doneBtn = (Button) findViewById(R.id.button);
+        doneBtn.setOnClickListener(listener);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         adapter = new NewsAdapter(this, docs);
@@ -77,21 +82,21 @@ public class MainActivity extends AppCompatActivity {
         };
         // Adds the scroll listener to RecyclerView
         recyclerView.addOnScrollListener(scrollListener);
-
-        getNewFormPage();
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // 為了讓 Toolbar 的 Menu 有作用，這邊的程式不可以拿掉
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
     private void getNewFormPage() {
+        qString = searchEditText.getText().toString();
+
         NewYorkTimes ny = Retrofit.getInstance().createService(NewYorkTimes.class);
-        Call<News> news = ny.getNews(String.valueOf(page));
+        Call<News> news = ny.getNews(String.valueOf(page),
+                qString, qBeginDay, qSort, qNewDesk
+        );
         news.enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
@@ -128,7 +133,18 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "MAX!!!", Toast.LENGTH_SHORT).show();
     }
 
-    private View.OnClickListener()
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.button:
+                    getNewFormPage();
+                    break;
+
+
+            }
+        }
+    };
 
     private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
         @Override
